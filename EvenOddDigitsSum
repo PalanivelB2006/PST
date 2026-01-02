@@ -1,0 +1,19 @@
+class UserMainCode {
+    public int EvenOddDigitsSum(int input1, String input2) {
+
+        int sum = 0;
+        int n = input1;
+
+        while (n > 0) {
+            int d = n % 10;
+            if ("even".equals(input2)) {
+                if (d % 2 == 0) sum += d;
+            } else {                 // "odd"
+                if (d % 2 != 0) sum += d;
+            }
+            n /= 10;
+        }
+
+        return sum;
+    }
+}
