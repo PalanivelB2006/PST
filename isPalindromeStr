@@ -1,0 +1,21 @@
+import java.io.*;
+import java.util.*;
+
+class UserMainCode {
+
+    public int isPalindromeStr(String input1) {
+
+        
+        String s = input1.toLowerCase();
+
+        StringBuilder sb = new StringBuilder(s);
+        sb.reverse();
+        String rev = sb.toString();
+
+        if (s.equals(rev)) {
+            return 2;
+        } else {
+            return 1; 
+        }
+    }
+}
