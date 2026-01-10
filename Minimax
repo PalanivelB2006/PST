@@ -27,6 +27,7 @@ public class Minimax {
             arr[i] = sc.nextInt();
         }
 
+
         miniMaxSum(arr);
         sc.close();
     }
