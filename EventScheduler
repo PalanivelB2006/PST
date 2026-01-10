@@ -1,0 +1,53 @@
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.*;
+
+class Event {
+    String name;
+    LocalDate date;
+
+    Event(String name, LocalDate date) {
+        this.name = name;
+        this.date = date;
+    }
+}
+
+public class EventScheduler {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = Integer.parseInt(sc.nextLine());
+        List<Event> events = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            String[] parts = sc.nextLine().split("\\s+");
+            String name = parts[0];
+            LocalDate date = LocalDate.parse(parts[1]);
+            events.add(new Event(name, date));
+        }
+
+        int monthLimit = Integer.parseInt(sc.nextLine());
+
+        List<Event> sortedByDate = events.stream()
+                .sorted(Comparator.comparing(e -> e.date))
+                .collect(Collectors.toList());
+
+        String line1 = sortedByDate.stream()
+                .map(e -> e.name)
+                .collect(Collectors.joining(" "));
+        System.out.println(line1);
+
+        Event earliest = sortedByDate.get(0);
+        Event latest = sortedByDate.get(sortedByDate.size() - 1);
+        System.out.println(earliest.name);
+        System.out.println(latest.name);
+
+        String line4 = events.stream()
+                .filter(e -> e.date.getMonthValue() == monthLimit)
+                .map(e -> e.name)
+                .collect(Collectors.joining(" "));
+        System.out.println(line4);
+
+        sc.close();
+    }
+}
