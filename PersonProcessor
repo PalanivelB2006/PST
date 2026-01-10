@@ -1,0 +1,60 @@
+import java.util.*;
+import java.util.stream.*;
+
+class Person {
+    private final String name;
+    private final int age;
+
+    Person(String name, int age) {
+        this.name = name;
+        this.age  = age;
+    }
+
+    public String getName() { return name; }
+    public int getAge()     { return age; }
+
+    public static boolean isOlderThan(Person p, int ageLimit) {
+        return p.getAge() > ageLimit;
+    }
+}
+
+public class PersonProcessor {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = Integer.parseInt(sc.nextLine());
+        List<Person> persons = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            String[] parts = sc.nextLine().split("\\s+");
+            String name = parts[0];
+            int age = Integer.parseInt(parts[1]);
+            persons.add(new Person(name, age));
+        }
+
+        int ageLimit = Integer.parseInt(sc.nextLine());
+
+        // 1) Sorted names alphabetically (method reference to getter)
+        String sortedNames = persons.stream()
+                .sorted(Comparator.comparing(Person::getName))
+                .map(Person::getName)
+                .collect(Collectors.joining(" "));
+        System.out.println(sortedNames);
+
+        // 2) Names of persons older than ageLimit, in input order
+        String olderNames = persons.stream()
+                .filter(p -> Person.isOlderThan(p, ageLimit))   // static method reference via lambda
+                .map(Person::getName)
+                .collect(Collectors.joining(" "));
+        System.out.println(olderNames);
+
+        // 3) All names in uppercase, original order (instance method reference of String)
+        String upperNames = persons.stream()
+                .map(Person::getName)
+                .map(String::toUpperCase)
+                .collect(Collectors.joining(" "));
+        System.out.println(upperNames);
+
+        sc.close();
+    }
+}
