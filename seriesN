@@ -1,0 +1,33 @@
+import java.io.*;
+import java.util.*;
+
+class UserMainCode {
+
+    public int seriesN(int input1, int input2, int input3, int input4) {
+        int a = input1;
+        int b = input2;
+        int c = input3;
+        int N = input4;
+
+        int d1 = b - a;
+        int d2 = c - b;
+
+        if (N == 1) return a;
+        if (N == 2) return b;
+        if (N == 3) return c;
+
+        int term = c;
+        int gap;
+
+        for (int i = 4; i <= N; i++) {
+            if (i % 2 == 0) {
+                gap = d1;
+            } else {
+                gap = d2;
+            }
+            term = term + gap;
+        }
+
+        return term;
+    }
+}
