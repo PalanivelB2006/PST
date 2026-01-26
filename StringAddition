@@ -1,0 +1,38 @@
+import java.io.*;
+import java.util.*;
+
+class StringAddition {
+
+    public String addNumberStrings(String input1, String input2) {
+
+        int i = input1.length() - 1;
+        int j = input2.length() - 1;
+        int carry = 0;
+
+        StringBuilder sb = new StringBuilder();
+
+        while (i >= 0 || j >= 0 || carry > 0) {
+
+            int d1 = 0;
+            if (i >= 0) {
+                d1 = input1.charAt(i) - '0';
+                i--;
+            }
+
+            int d2 = 0;
+            if (j >= 0) {
+                d2 = input2.charAt(j) - '0';
+                j--;
+            }
+
+            int sum = d1 + d2 + carry;
+            int digit = sum % 10;
+            carry = sum / 10;
+
+            sb.append(digit);
+        }
+
+        sb.reverse();
+        return sb.toString();
+    }
+}
