@@ -1,0 +1,28 @@
+import java.io.*;
+import java.util.*;
+
+class UserMainCod {
+
+    public int AddSub(int input1, int input2) {
+        int sum = input1;          // start from N itself
+
+        boolean isPlus;
+        if (input2 == 2) {         // opt = 2 -> next operation is +
+            isPlus = true;
+        } else {                   // opt = 1 -> next operation is -
+            isPlus = false;
+        }
+
+        for (int i = input1 - 1; i >= 1; i--) {
+            if (isPlus) {
+                sum += i;          // add current i
+                isPlus = false;
+            } else {
+                sum -= i;          // subtract current i
+                isPlus = true;
+            }
+        }
+
+        return sum;
+    }
+}
