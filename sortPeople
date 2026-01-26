@@ -1,0 +1,21 @@
+import java.util.*;
+
+class Solution {
+    public String[] sortPeople(String[] names, int[] heights) {
+        int n = names.length;
+
+        Integer[] idx = new Integer[n];
+        for (int i = 0; i < n; i++) {
+            idx[i] = i;
+        }
+
+        Arrays.sort(idx, (i, j) -> heights[j] - heights[i]);  // sort indices by height desc [web:75][web:139]
+
+        String[] ans = new String[n];
+        for (int k = 0; k < n; k++) {
+            ans[k] = names[idx[k]];
+        }
+
+        return ans;
+    }
+}
