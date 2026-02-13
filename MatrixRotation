@@ -1,0 +1,114 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.*;
+import java.util.regex.*;
+import java.util.stream.*;
+import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
+
+class Result {
+
+    public static void matrixRotation(List<List<Integer>> matrix, int r) {
+        int rows = matrix.size();
+        int cols = matrix.get(0).size();
+        int layers = Math.min(rows, cols) / 2;
+
+        int[][] grid = new int[rows][cols];
+        for (int i = 0; i < rows; i++) {
+            List<Integer> row = matrix.get(i);
+            for (int j = 0; j < cols; j++) {
+                grid[i][j] = row.get(j);
+            }
+        }
+
+        for (int layer = 0; layer < layers; layer++) {
+            int top = layer;
+            int left = layer;
+            int bottom = rows - 1 - layer;
+            int right = cols - 1 - layer;
+
+            List<Integer> ring = new ArrayList<>();
+
+            for (int j = left; j <= right; j++) {
+                ring.add(grid[top][j]);
+            }
+            for (int i = top + 1; i <= bottom - 1; i++) {
+                ring.add(grid[i][right]);
+            }
+            for (int j = right; j >= left; j--) {
+                ring.add(grid[bottom][j]);
+            }
+            for (int i = bottom - 1; i >= top + 1; i--) {
+                ring.add(grid[i][left]);
+            }
+
+            int len = ring.size();
+            int rEff = r % len;
+            if (rEff != 0) {
+                List<Integer> rotated = new ArrayList<>(len);
+                rotated.addAll(ring.subList(rEff, len));
+                rotated.addAll(ring.subList(0, rEff));
+                ring = rotated;
+            }
+
+            int idx = 0;
+
+            for (int j = left; j <= right; j++) {
+                grid[top][j] = ring.get(idx++);
+            }
+            for (int i = top + 1; i <= bottom - 1; i++) {
+                grid[i][right] = ring.get(idx++);
+            }
+            for (int j = right; j >= left; j--) {
+                grid[bottom][j] = ring.get(idx++);
+            }
+            for (int i = bottom - 1; i >= top + 1; i--) {
+                grid[i][left] = ring.get(idx++);
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < rows; i++) {
+            sb.setLength(0);
+            for (int j = 0; j < cols; j++) {
+                if (j > 0) sb.append(' ');
+                sb.append(grid[i][j]);
+            }
+            System.out.println(sb.toString());
+        }
+    }
+}
+
+public class Solution {
+    public static void main(String[] args) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
+        String[] firstMultipleInput = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
+
+        int m = Integer.parseInt(firstMultipleInput[0]);
+        int n = Integer.parseInt(firstMultipleInput[1]);
+        int r = Integer.parseInt(firstMultipleInput[2]);
+
+        List<List<Integer>> matrix = new ArrayList<>();
+
+        IntStream.range(0, m).forEach(i -> {
+            try {
+                matrix.add(
+                    Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
+                        .map(Integer::parseInt)
+                        .collect(toList())
+                );
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        Result.matrixRotation(matrix, r);
+
+        bufferedReader.close();
+    }
+}
